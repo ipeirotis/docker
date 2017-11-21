@@ -54,6 +54,8 @@ RUN pip3 install -U \
 	pip \
 	jupyter \
 	ipython \
+	jellyfish \
+	ngram \
 	numpy \
 	scipy \
 	matplotlib \
