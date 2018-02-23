@@ -1,0 +1,4 @@
+courses:
+    - name: course_name
+      repo: 'https://github.com/repo/for/course_a.git'
+

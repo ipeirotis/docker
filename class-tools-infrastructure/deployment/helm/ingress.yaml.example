@@ -1,0 +1,4 @@
+controller:
+  service:
+    loadBalancerIP: STATIC_IP_ADDRESS
+    externalTrafficPolicy: Local

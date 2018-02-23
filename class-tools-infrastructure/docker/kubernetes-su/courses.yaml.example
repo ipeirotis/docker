@@ -1,0 +1,5 @@
+courses:
+    - name: course_name_a
+      repo: 'https://github.com/repo/for/course_a.git'
+    - name: course_name_b
+      repo: 'https://github.com/repo/for/course_b.git'

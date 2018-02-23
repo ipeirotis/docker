@@ -1,0 +1,4 @@
+[submodule "deployment/helm/zero-to-jupyterhub-k8s"]
+	path = deployment/helm/zero-to-jupyterhub-k8s
+	url = https://github.com/abenetopoulos/zero-to-jupyterhub-k8s
+	branch = pvc-delete

@@ -1,0 +1,65 @@
+proxy:
+    secretToken: "SECRET_TOKEN"
+    hosts:
+        - HOST
+    https:
+        letsencrypt:
+            contactEmail: CERT_EMAIL
+
+hub:
+    cookieSecret: "COOKIE_SECRET"
+    extraConfig: |
+        c.JupyterHub.authenticator_class = 'ldapauthenticator.LDAPAuthenticator'
+        c.LDAPAuthenticator.server_address = SERVER_ADDRESS
+        c.LDAPAuthenticator.bind_dn_template = ['uid={username}, ou=people, dc=example, dc=com']
+        c.LDAPAuthenticator.use_ssl = True
+        c.Authenticator.admin_users = {'ADMIN_USER_1', 'ADMIN_USER_2', ...}
+        c.JupyterHub.admin_access = True
+        c.KubeSpawner.singleuser_image_pull_policy = "Always"
+        c.KubeSpawner.volume_mounts = [{"name" : "volume-{username}", "mountPath" : "/home/{username}"}, {"name" : "nfs", "mountPath" : "/home/{username}/assignments"}]
+        c.KubeSpawner.volumes = [{"name" : "volume-{username}", "persistentVolumeClaim" : {"claimName" : "claim-{username}"}}, {"name" : "nfs", "persistentVolumeClaim" : {"claimName" : "nfs"}}]
+        c.KubeSpawner.singleuser_extra_container_config = {"securityContext" : {"privileged": True, "capabilities" : {"add" : ["SYS_ADMIN"]}}}
+        c.KubeSpawner.cmd = 'start-notebook.sh'
+        c.KubeSpawner.start_timeout = 300
+        c.KubeSpawner.singleuser_extra_containers = [
+            {
+                'name': 'db',
+                'image': 'DB_IMAGE_NAME',
+                'imagePullPolicy': 'Always',
+                'env': [{ 'name': 'MYSQL_ROOT_PASSWORD', 'value': 'ROOT_PASS' }],
+                'ports': [{ 'containerPort' : 3306 }],
+                'securityContext': { 'runAsUser' : 0 }
+            }
+        ]
+
+        def cluster_admin_env(spawner, pod):
+            username = '-'.join(pod.metadata.name.split('-')[1:])
+            is_admin = '0'
+            if username in c.Authenticator.admin_users:
+                is_admin = '1'
+
+            pod.spec.containers[0].env.append({'name' : 'USER_IS_CLUSTER_ADMIN', 'value' : is_admin})
+
+            return pod
+
+
+        c.KubeSpawner.modify_pod_hook = cluster_admin_env
+
+
+singleuser:
+    image:
+        name: HUB_REPOSITORY
+        tag: IMAGE_TAG
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  tls:
+    - hosts:
+      - DOMAIN_NAME
+      secretName : SECRET
+
+  hosts:
+    - DOMAIN_NAME
