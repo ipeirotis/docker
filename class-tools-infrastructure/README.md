@@ -18,6 +18,7 @@ This is the Class Tools infrastructure specification and management tools.
   - [Set Up an NFS Server](#set-up-an-nfs-server)
 - [Configure Formgrader](#configure-formgrader)
 - [Remove JupyterHub](#remove-jupyterhub)
+- [How do I...](#how-do-i)
 - [Reference](#reference)
 
 ### Prerequisites
@@ -66,6 +67,19 @@ to just build the docker image locally.
 
 #### Build the notebook image
 
+To set the courses which will be downloaded to the users' servers, run
+
+```bash
+cp docker/kubernetes-su/courses.yaml.example docker/kubernetes-su/courses.yaml
+```
+
+and edit the resulting `docker/kubernetes-su/courses.yaml` file. The entries are of the form
+
+```yaml
+- name: course_name
+  repo: course_git_repository
+```
+
 To build and push the single-user Jupyter Notebook image that will be spawned on Kubernetes, run:
 
 ```bash
@@ -82,6 +96,15 @@ make build-kubernetes-su
 
 to just build the docker image locally.
 
+You can also upload any datasets you wish to make available to the students into a Google Cloud bucket.
+Follow the instructions in [[2]](#reference) to create a public GCP bucket. Then, to make the contents of this
+bucket available to students, specify the variable `GCLOUD_DATA` when building the image. So the earlier command
+would become:
+
+```bash
+make GCLOUD_DATA=BUCKET-NAME build-kubernetes-su
+```
+
 There is also a single-user server Docker image that can be executed locally, or within a GCP Container Engine/
 AWS ECS instance.
 
@@ -90,6 +113,15 @@ To build this version, run:
 ```bash
 make push-local-su
 ```
+
+To make the datasets available in this image, you will have to specify them in a `data.yaml` file. Run
+
+```bash
+cp docker/local-su/data.yaml.example docker/local-su/data.yaml
+```
+
+and populate the resulting `docker/local-su/data.yaml` file in the same way as the `docker/kubernetes-su/courses.yaml`
+file earlier.
 
 #### Build the database image
 
@@ -352,7 +384,7 @@ You will be able to access JupyterHub directly from this IP on the standard HTTP
 Update `config.yaml` and upgrade the installation.
 
 ```bash
-helm upgrade RELEASE-NAME jupyterhub/jupyterhub --version=v0.5 -f deployment/helm/config.yaml [--set=rbac.enabled=false]
+helm upgrade RELEASE-NAME jupyterhub/jupyterhub --version=v0.6 -f deployment/helm/config.yaml [--set=rbac.enabled=false]
 ```
 
 ### Configure Formgrader
@@ -404,8 +436,111 @@ helm del --purge LEGO-RELEASE-NAME
 make NAMESPACE=NAMESPACE-NAME teardown-nfs-server
 ```
 
+### How do I
+
+* ...add a new library in the configuration, so that it's available to all Jupyter users?
+
+  Any new libraries should be installed in the base image, which means editing the `Dockerfile` under
+  `docker/base/`. Once you have done this, you will have to run
+
+  ```bash
+  make push-all
+  ```
+
+  to build and push the base image, as well as the singleuser notebook images, which build on top of the base
+  image.
+
+  Finally, you will have to update the deployment by executing
+
+  ```bash
+  helm upgrade RELEASE-NAME jupyterhub/jupyterhub --version=v0.6 -f deployment/helm/config.yaml [--set=rbac.enabled=false]
+  ```
+
+
+* ...add a new course to the user servers?
+
+  You will have to extend the `courses.yaml` file under `docker/kubernetes-su` by adding the new course.
+  Once you have done this, you will have to run
+
+  ```bash
+  make push-server-images
+  ```
+
+  to build and push the notebook images.
+  Finally, you will have to update the deployment by executing
+
+  ```bash
+  helm upgrade RELEASE-NAME jupyterhub/jupyterhub --version=v0.6 -f deployment/helm/config.yaml [--set=rbac.enabled=false]
+  ```
+
+* ...add a new dataset to be distributed?
+
+  To add the dataset to the `local-su` image, which is the one students will be running locally, as well as in GCP and AWS, you
+  will have to edit the `docker/local-su/data.yaml` file, in a similar way to the `courses.yaml` file described earlier.
+
+  To add the dataset to the kubernetes deployment you will have to upload the dataset's files to the Google Cloud bucket which you
+  specify with the `GCLOUD_DATA` variable during [the image build phase](#build-the-notebook-image). This will make it accessible to all users of Jupyterhub
+  running on Kubernetes.
+
+* ...figure out what is wrong when a student is facing a 500 error?
+
+  **NOTE**: A useful tool for this kind of debugging is the `watch` Linux utility.
+
+  Run
+  ```bash
+  kubectl get pods --namespace NAMESPACE-NAME
+  ```
+
+  where `NAMESPACE-NAME` is the namespace you deployed the hub to [earlier](#install-jupyterhub). Is the user's pod (its name
+  will be jupyter-USERNAME) running? If so, then you can run either of
+
+  ```bash
+  kubectl logs --namespace NAMESPACE-NAME jupyter-USERNAME notebook
+  kubectl logs --namespace NAMESPACE-NAME jupyter-USERNAME db
+  ```
+
+  to get the corresponding container's logs. The first command will display the logs for the container the notebook server
+  is running in, while the second one will show the logs for the MySQL database container.
+
+  If the user's pod is not running, then you will have to manually launch it from the hub's admin panel, and inspect its
+  lifecycle.
+
+  Before moving on, it is a good idea to run
+
+  ```bash
+  watch kubectl logs --namespace NAMESPACE-NAME jupyter-USERNAME notebook
+  watch kubectl logs --namespace NAMESPACE-NAME jupyter-USERNAME db
+  ```
+
+  This will periodically (every 2s) retrieve the latest logs for the pod's containers. This will give you a better chance of
+  finding out the cause, especially if the problem leads to the pod being killed, thus rendering the logs unreachable.
+
+  Log into the hub using an admin account, and head over to the 'Admin' view. Locate the user who is experiencing the issues, and
+  click on 'Start Server'. This will attempt to launch the user's server, as if they had logged in through their web browser.
+  Look at the output of the `watch` commands above for indications of what might be going wrong.
+
+  Another issue might be that Kubernetes fails to launch the server images. To do this, launch the user's server through the admin
+  panel as above, and run
+
+  ```bash
+  kubectl describe pod --namespace NAMESPACE-NAME jupyter-USERNAME
+  ```
+
+  There most likely will be an indication as to what went wrong in the output of the above command.
+
+  The hub's logs might also shed some light on the issue. Run
+  ```bash
+  kubectl get pods --namespace NAMESPACE-NAME
+  # find the hub's pod name
+  kubectl logs --namespace NAMESPACE-NAME HUB-POD
+  ```
+
+  **NOTE**: This will retrieve _everything_ the hub has logged since it was deployed. As a consequence, the output of this command
+  will be quite large.
+
 ### Reference
 
 [1] [Helm Chart Configuration](https://zero-to-jupyterhub.readthedocs.io/en/latest/reference.html#id1)
 
 [2] [How to make a public Google Cloud Storage Bucket](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md#google-cloud-storage)
+

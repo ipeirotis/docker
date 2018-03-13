@@ -18,11 +18,18 @@ RUN apt-get -y update && \
 RUN pip3 install -U \
     notebook==5.2.* \
     jupyterhub==0.8.* \
+    jupyterlab \
     ipython
 
 RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter nbextension enable --system --py nbgrader && \
-    jupyter serverextension enable --system --py nbgrader
+    jupyter serverextension enable --system --py nbgrader && \
+    jupyter serverextension enable --system --py jupyterlab
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
+    sudo apt-get install -y nodejs
+RUN jupyter labextension install --debug @jupyterlab/hub-extension
+
 ARG FILE_PATH
 
 # Add a notebook profile.
@@ -44,9 +51,15 @@ COPY $FILE_PATH/clone_nbs.py /
 COPY $FILE_PATH/courses.yaml /
 COPY $FILE_PATH/nbgrader_config.py /etc/jupyter/
 
+RUN apt update && apt install -y mysql-client
+
 RUN mkdir -p /srv/nbgrader/exchange && \
     chmod -R 777 /srv/nbgrader && \
     touch /.nbgrader.log && \
     chmod -R 777 /.nbgrader.log
+
+RUN R -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='https://cloud.r-project.org/')" && \
+    R -e "devtools::install_github('IRkernel/IRkernel')" && \
+    R -e "IRkernel::installspec(user = FALSE)"
 
 USER $NB_USER

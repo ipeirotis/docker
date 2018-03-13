@@ -98,4 +98,13 @@ RUN pip3 install -U \
 
 RUN pip3 install sql_magic mysqlclient
 
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties
+RUN apt-get install apt-transport-https
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    apt-get update && \
+    apt-get install -y r-base
+
+RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown'), repos='https://cloud.r-project.org/')"
+
 RUN chmod -R 777 /home

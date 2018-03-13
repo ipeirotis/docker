@@ -33,6 +33,13 @@ def check_notebooks():
                 repo = git.Repo(directory)
                 assert not repo.bare
 
+                if 'JUPYTERHUB_USER' not in os.environ:
+                    # overwrite permission changes
+                    p = subprocess.Popen('''git diff -p | grep -E \'^(diff|old mode|new mode)\' |
+                    sed -e \'s/^old/NEW/;s/^new/old/;s/^NEW/new/\' | git apply''', cwd=directory, shell=True)
+
+                    p.wait()
+
                 # fetch remote repo changes
                 repo.remotes.origin.fetch()
 
@@ -77,7 +84,7 @@ def check_notebooks():
             except:
                 print("Failed while fetching changes, will backup entire folder and reset")
 
-                if subprocess.call(['cp', '-r', directory, backup_pref + directory]) == 0:
+                if subprocess.call(['cp', '-r', directory, notebook_dir_path + '/' + backup_pref + course['name']]) == 0:
                     repo = git.Repo(directory)
                     assert not repo.bare
 

@@ -7,7 +7,7 @@ export DEPLOYMENT_PATH
 
 .PHONY: build-image push-image build-base push-base build-kubernets-su push-kubernetes-su \
 	build-hub push-hub check-registry check-namespace deploy-nfs-server teardown-nfs-server \
-	build-db push-db build-local-su push-local-su
+	build-db push-db build-local-su push-local-su build-all push-all
 
 check-registry:
 ifndef DOCKER_REGISTRY
@@ -55,6 +55,18 @@ build-db:
 
 push-db: build-db
 	make IMAGE="db" push-image
+
+build-all: 
+	make build-base 
+	make build-kubernetes-su 
+	make build-local-su
+	make build-db
+
+push-all: build-all
+	make push-base 
+	make push-kubernetes-su 
+	make push-local-su
+	make push-db
 
 deploy-nfs-server: check-namespace
 	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/provisioner/nfs-server-gce-pv.yaml
