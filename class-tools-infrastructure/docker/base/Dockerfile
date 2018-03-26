@@ -107,4 +107,11 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 
 RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown'), repos='https://cloud.r-project.org/')"
 
+RUN apt-get install -y pandoc
+
+RUN pip3 install \
+    graphviz \
+    liac-arff \
+    pydotplus
+
 RUN chmod -R 777 /home

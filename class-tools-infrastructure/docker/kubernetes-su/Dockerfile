@@ -1,4 +1,4 @@
-FROM BASE_IMAGE
+FROM ipeirotis/dealing_with_data:base-latest
 
 ENV NB_USER ubuntu
 
@@ -15,11 +15,11 @@ RUN apt-get -y update && \
     apt-get -y install gcsfuse
 
 # install basic Python libraries to run Jupyter
-RUN pip3 install -U \
-    notebook==5.2.* \
-    jupyterhub==0.8.* \
-    jupyterlab \
-    ipython
+RUN pip3 install \
+    notebook==5.2.2 \
+    jupyterhub==0.8.1 \
+    jupyterlab==0.31.10 \
+    ipython==6.2.1
 
 RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter nbextension enable --system --py nbgrader && \

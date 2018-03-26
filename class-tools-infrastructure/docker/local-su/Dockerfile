@@ -1,4 +1,4 @@
-FROM KUBERNETES_IMAGE
+FROM ipeirotis/dealing_with_data:kubernetes-su-latest
 
 USER root
 

@@ -1,8 +1,8 @@
 SHELL = /bin/bash
-DOCKER_PATH=docker/
+DOCKER_PATH=class-tools-infrastructure/docker/
 IMG_VERSION?=latest
 GCLOUD_DATA?=shared_dataset_bucket
-DEPLOYMENT_PATH=deployment/
+DEPLOYMENT_PATH=class-tools-infrastructure/deployment/
 export DEPLOYMENT_PATH
 
 .PHONY: build-image push-image build-base push-base build-kubernets-su push-kubernetes-su \
