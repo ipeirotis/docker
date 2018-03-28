@@ -36,8 +36,8 @@ RUN apt-get -y update && \
         python3-lxml \
         zlib1g-dev \
         pandoc \
-        texlive-xetex
-    python3-mysqldb && \
+        texlive-xetex \
+        python3-mysqldb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
