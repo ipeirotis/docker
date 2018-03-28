@@ -10,6 +10,8 @@ We also a few more options for students (or classes) that want more flexibility:
 
 * [Setup a Jupyter server and MySQL locally, using Docker](https://docs.google.com/document/d/1d9bRGYUSvTGRAqXIJAmH8_SGkXaU5bJ3w3p4IeXgQpo/edit?usp=sharing)
 
-* [Setup a Jupyter server and MySQL on Google Cloud](https://docs.google.com/document/d/1VpMxGQEBI19tcBmtCldQVqUrzWZAj_LvLF2os0R5IOY/edit?usp=sharing)
+* [Setup a Jupyter server and MySQL on Google Cloud, using Docker](https://docs.google.com/document/d/1VpMxGQEBI19tcBmtCldQVqUrzWZAj_LvLF2os0R5IOY/edit?usp=sharing)
 
-* [Setup a Jupyter server and MySQL on Amazon Cloud](https://docs.google.com/document/d/1L7knUOpEimeYzpkuMoh_Qx8oyoPehFEsK-9rj6_j7vg/edit?usp=sharing)
+* [Setup a Jupyter server and MySQL on Amazon Cloud, using Docker](https://docs.google.com/document/d/1L7knUOpEimeYzpkuMoh_Qx8oyoPehFEsK-9rj6_j7vg/edit?usp=sharing)
+
+
