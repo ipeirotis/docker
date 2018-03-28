@@ -35,6 +35,8 @@ RUN apt-get -y update && \
         libxslt-dev \
         python3-lxml \
         zlib1g-dev \
+        pandoc \
+        texlive-xetex
     python3-mysqldb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -45,6 +47,11 @@ RUN pip3 install -U pip
 # add libraries used in intro to python exercise
 RUN pip3 install -U jellyfish \
     ngram
+
+# add support for SQL
+RUN pip3 install -U \
+    sql_magic \
+    mysqlclient
 
 # add standard data science libraries
 RUN pip3 install -U \
@@ -60,7 +67,8 @@ RUN pip3 install -U \
     requests \
     requests_oauthlib \
     Flask \
-    slackclient
+    slackclient \
+    tweepy
 
 # add libraries for NLP
 RUN pip3 install -U \
@@ -93,10 +101,18 @@ RUN pip3 install -U \
     pymongo \
     selenium \
     pyyaml \
-    gitpython \
-    tweepy
+    gitpython
+    
+    
 
-RUN pip3 install sql_magic mysqlclient
+# for data mining class
+RUN pip3 install  -U\
+    graphviz \
+    liac-arff \
+    pydotplus
+
+
+
 
 RUN apt-get update && apt-get install -y software-properties-common python-software-properties
 RUN apt-get install apt-transport-https
@@ -107,11 +123,5 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 
 RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown'), repos='https://cloud.r-project.org/')"
 
-RUN apt-get install -y pandoc
-
-RUN pip3 install \
-    graphviz \
-    liac-arff \
-    pydotplus
 
 RUN chmod -R 777 /home
