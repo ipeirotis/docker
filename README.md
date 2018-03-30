@@ -1,10 +1,10 @@
 # Using Docker to deploy a data science environment
 
-This repository contains our setup and configuration files for setting up a data science environment (Jupyter running Python and R, plus MySQL).
+This repository contains our setup and configuration files for setting up a data science environment for the students at NYU/Stern. (Jupyter running Python and R, plus MySQL).
 
 ## Instructions for students
 
-* As the simplest, and default option for NYU/Stern students, we offer a JupyterHub server, which is connected to the NYU/Stern LDAP server. [Setup Instructions](https://docs.google.com/document/d/1A5Y53eqBRRlrVMV-yLrpA9-3xZ3jQmv9i6qhOU5gn44/edit?usp=sharing).
+* As the simplest, and default option for NYU/Stern students, we offer a JupyterHub server (on top of Kubernetes), which is connected to the NYU/Stern LDAP server. [Setup Instructions](https://docs.google.com/document/d/1A5Y53eqBRRlrVMV-yLrpA9-3xZ3jQmv9i6qhOU5gn44/edit?usp=sharing).
 
 We also a few more options for students (or classes) that want more flexibility:
 
