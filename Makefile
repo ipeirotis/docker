@@ -3,6 +3,7 @@ DOCKER_PATH=class-tools-infrastructure/docker/
 IMG_VERSION?=latest
 GCLOUD_DATA?=shared_dataset_bucket
 DEPLOYMENT_PATH=class-tools-infrastructure/deployment/
+PREFIX?=class-tools-infrastructure/
 export DEPLOYMENT_PATH
 
 .PHONY: build-image push-image build-base push-base build-kubernets-su push-kubernetes-su \
@@ -58,10 +59,10 @@ push-db: build-db
 	make IMAGE="db" push-image
 
 build-proxy:
-	make IMAGE="proxy" build-image
+	make ARG="--build-arg PREFIX=${PREFIX}" IMAGE="proxy" build-image
 
 push-proxy: build-proxy
-	make IMAGE="proxy" push-image
+	make ARG="--build-arg PREFIX=${PREFIX}" IMAGE="proxy" push-image
 
 build-all:
 	make build-base

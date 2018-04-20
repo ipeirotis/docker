@@ -1,15 +1,15 @@
 FROM golang:1.8-alpine3.6
 
-ARG CODE_PATH
+ARG PREFIX
 
 WORKDIR /app
 
 RUN mkdir -p go/src/grader-proxy
 
-COPY proxy/main.go /app/go/src/grader-proxy/
-COPY proxy/glide.yaml /app/go/src/grader-proxy/
-COPY proxy/glide.lock /app/go/src/grader-proxy/
-COPY docker/kubernetes-su/courses.yaml /
+COPY ${PREFIX}proxy/main.go /app/go/src/grader-proxy/
+COPY ${PREFIX}proxy/glide.yaml /app/go/src/grader-proxy/
+COPY ${PREFIX}proxy/glide.lock /app/go/src/grader-proxy/
+COPY ${PREFIX}docker/kubernetes-su/courses.yaml /
 
 RUN apk add --update git glide bash
 
