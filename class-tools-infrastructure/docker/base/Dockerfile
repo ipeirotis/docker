@@ -6,9 +6,9 @@ ENV LC_ALL en_US.UTF-8
 ENV PYTHONIOENCODING UTF-8
 
 RUN apt-get -y update && \
-    apt-get -y dist-upgrade && \
-    apt-get -y upgrade && \
-    apt-get -y install \
+        apt-get -y dist-upgrade && \
+        apt-get -y upgrade && \
+        apt-get -y install \
         sudo \
         build-essential \
         python3-dev \
@@ -38,8 +38,8 @@ RUN apt-get -y update && \
         pandoc \
         texlive-xetex \
         python3-mysqldb && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
 
 # install latest version of pip
 RUN pip3 install -U pip
@@ -95,18 +95,17 @@ RUN pip3 install -U \
     boto \
     boto3 \
     elasticsearch \
-    nbgrader \
     networkx \
     py2neo \
     pymongo \
     selenium \
     pyyaml \
     gitpython
-    
-    
+
+
 
 # for data mining class
-RUN pip3 install  -U\
+RUN pip3 install -U\
     graphviz \
     liac-arff \
     pydotplus

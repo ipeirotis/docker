@@ -1,0 +1,13 @@
+package: grader-proxy
+import:
+- package: k8s.io/client-go
+  version: ^4.0.0
+  subpackages:
+  - kubernetes
+  - plugin/pkg/client/auth/gcp
+  - pkg/api/v1
+  - tools/clientcmd
+  - pkg/apis/apps/v1beta1
+  - rest
+- package: gopkg.in/yaml.v2
+  version: ^2.2.1

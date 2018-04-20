@@ -7,7 +7,8 @@ export DEPLOYMENT_PATH
 
 .PHONY: build-image push-image build-base push-base build-kubernets-su push-kubernetes-su \
 	build-hub push-hub check-registry check-namespace deploy-nfs-server teardown-nfs-server \
-	build-db push-db build-local-su push-local-su build-all push-all
+	build-db push-db build-local-su push-local-su build-proxy push-proxy build-all push-all \
+	deploy-grading-proxy teardown-grading-proxy
 
 check-registry:
 ifndef DOCKER_REGISTRY
@@ -56,17 +57,25 @@ build-db:
 push-db: build-db
 	make IMAGE="db" push-image
 
-build-all: 
-	make build-base 
-	make build-kubernetes-su 
+build-proxy:
+	make IMAGE="proxy" build-image
+
+push-proxy: build-proxy
+	make IMAGE="proxy" push-image
+
+build-all:
+	make build-base
+	make build-kubernetes-su
 	make build-local-su
 	make build-db
+	make build-proxy
 
 push-all: build-all
-	make push-base 
-	make push-kubernetes-su 
+	make push-base
+	make push-kubernetes-su
 	make push-local-su
 	make push-db
+	make push-proxy
 
 deploy-nfs-server: check-namespace
 	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/provisioner/nfs-server-gce-pv.yaml
@@ -82,3 +91,10 @@ teardown-nfs-server: check-namespace
 	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-server-service.yaml
 	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pv.yaml
 	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pvc.yaml
+
+deploy-grading-proxy: check-namespace
+	${DEPLOYMENT_PATH}proxy/setup.sh
+	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}proxy/Proxy.yaml
+
+teardown-grading-proxy: check-namespace
+	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}proxy/Proxy.yaml

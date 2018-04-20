@@ -9,6 +9,7 @@ proxy:
 hub:
     cookieSecret: "COOKIE_SECRET"
     extraConfig: |
+        c.JupyterHub.api_tokens = { 'proxy-token': 'PROXY_TOKEN' }
         c.JupyterHub.authenticator_class = 'ldapauthenticator.LDAPAuthenticator'
         c.LDAPAuthenticator.server_address = SERVER_ADDRESS
         c.LDAPAuthenticator.bind_dn_template = ['uid={username}, ou=people, dc=example, dc=com']

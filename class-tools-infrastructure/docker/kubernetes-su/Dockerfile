@@ -21,6 +21,9 @@ RUN pip3 install \
     jupyterlab==0.31.10 \
     ipython==6.2.1
 
+RUN pip3 install --no-cache-dir \
+    git+https://github.com/abenetopoulos/nbgrader@e3a0082
+
 RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter nbextension enable --system --py nbgrader && \
     jupyter serverextension enable --system --py nbgrader && \
@@ -50,6 +53,7 @@ COPY $FILE_PATH/start-notebook.sh /usr/local/bin/
 COPY $FILE_PATH/clone_nbs.py /
 COPY $FILE_PATH/courses.yaml /
 COPY $FILE_PATH/nbgrader_config.py /etc/jupyter/
+COPY $FILE_PATH/grading_service.py /
 
 RUN apt update && apt install -y mysql-client
 

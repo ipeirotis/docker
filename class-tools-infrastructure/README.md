@@ -7,6 +7,7 @@ This is the Class Tools infrastructure specification and management tools.
   - [Build the notebook image](#build-the-notebook-image)
   - [Build the database image](#build-the-database-image)
   - [Build the hub image](#build-the-hub-image)
+  - [Build the proxy image](#build-the-proxy-image)
 - [Setup JupyterHub on your Kubernetes cluster](#setup-jupyterhub-on-gce)
   - [Configure Helm](#configure-helm)
   - [Reserve a static IP address](#reserve-a-static-ip-address)
@@ -16,6 +17,7 @@ This is the Class Tools infrastructure specification and management tools.
   - [Access the service](#access-the-service)
   - [Update the configuration](#update-the-configuration)
   - [Set Up an NFS Server](#set-up-an-nfs-server)
+  - [Set Up the Grading Proxy](#set-up-the-grading-proxy)
 - [Configure Formgrader](#configure-formgrader)
 - [Remove JupyterHub](#remove-jupyterhub)
 - [How do I...](#how-do-i)
@@ -78,7 +80,12 @@ and edit the resulting `docker/kubernetes-su/courses.yaml` file. The entries are
 ```yaml
 - name: course_name
   repo: course_git_repository
+  instructor: instructor_username
 ```
+
+If there is no repository for this course, you should write `repo: ''`.
+
+The `instructor` field's value should be the course instructor's LDAP username. It is only required if you plan on using nbgrader for the course. Otherwise, it can be omitted.
 
 To build and push the single-user Jupyter Notebook image that will be spawned on Kubernetes, run:
 
@@ -168,6 +175,25 @@ for instructions on how to create a public storage bucket). Once you have update
 ```
 
 from the `deployment/helm` directory, where `bucket_name` is the name of the Google Cloud bucket that will host the helm repository.
+
+#### Build the proxy image
+
+Before building the grading proxy, make sure you have set up the `courses.yaml` file under `docker/kubernetes-su/`.
+
+To build and push the grading proxy image, run
+
+```bash
+make push-proxy
+```
+in the project's root directory.
+
+You can also run
+
+```bash
+make build-proxy
+```
+
+to just build the docker image locally.
 
 ### Setup JupyterHub on GCE
 
@@ -355,6 +381,29 @@ make NAMESPACE=NAMESPACE-NAME deploy-nfs-server
 
 where NAMESPACE-NAME is the namespace you deployed JupyterHub to in the previous step.
 
+#### Set Up the Grading Proxy
+
+To set up the grading proxy within the cluster, you will first have to copy the `deployment/proxy/Proxy.yaml.example` file into
+`deployment/proxy/Proxy.yaml`. Then, edit the following values in the .yaml file:
+- Pod
+    * `spec.containers.image`: Specify the image you pushed [earlier](#build-the-proxy-image).
+    * `spec.env.JUPYTERHUB_API_TOKEN`: Generate a new token using `openssl rand -hex 32`, and replace the placeholder value with
+    this. This value should also be added to `deployment/helm/config.yaml`, under `hub.extraConfig`:
+    ```yaml
+    hub:
+        extraConfig: |
+            c.JupyterHub.api_tokens = { 'TOKEN': 'admin-username' }
+            ...
+    ```
+where `admin-username` is the username of one of the cluster admins, as specified in the `config.yaml` file.
+
+Once you are done with the changes, run
+
+```bash
+make NAMESPACE=NAMESPACE-NAME deploy-grading-proxy
+```
+
+where NAMESPACE-NAME is the namespace you deployed JupyterHub to in the previous step.
 
 #### Access the service
 
@@ -434,6 +483,12 @@ helm del --purge LEGO-RELEASE-NAME
 
 ```bash
 make NAMESPACE=NAMESPACE-NAME teardown-nfs-server
+```
+
+- Remove the grading proxy.
+
+```bash
+make NAMESPACE=NAMESPACE-NAME teardown-grading-proxy
 ```
 
 ### How do I

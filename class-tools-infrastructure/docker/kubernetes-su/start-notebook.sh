@@ -19,6 +19,8 @@ if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
     if [[ "$USER_IS_CLUSTER_ADMIN" == 0 ]]; then
         sudo jupyter nbextension disable --sys-prefix formgrader/main --section=tree
         sudo jupyter serverextension disable --sys-prefix nbgrader.server_extensions.formgrader
+    else
+        exec sudo -n -E -u ${JUPYTERHUB_USER} python3 -u /grading_service.py &
     fi
 
     exec sudo -n -E -u ${JUPYTERHUB_USER} jupyterhub-singleuser $*

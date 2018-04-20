@@ -3,6 +3,7 @@ import git
 import os
 import subprocess
 import sys
+import shutil
 import yaml
 
 backup_pref = 'backup_' + ''.join(list(filter(lambda x: not x == '-', datetime.today().isoformat()[0:10]))) + '_'
@@ -27,7 +28,9 @@ def check_notebooks():
 
         if not os.path.exists(directory):
             os.mkdir(directory)
-            subprocess.call(['git', 'clone', course['repo'], directory])
+
+            if course['repo'] != '':
+                subprocess.call(['git', 'clone', course['repo'], directory])
         else:
             try:
                 repo = git.Repo(directory)
@@ -85,10 +88,17 @@ def check_notebooks():
                 print("Failed while fetching changes, will backup entire folder and reset")
 
                 if subprocess.call(['cp', '-r', directory, notebook_dir_path + '/' + backup_pref + course['name']]) == 0:
-                    repo = git.Repo(directory)
-                    assert not repo.bare
+                    try:
+                        repo = git.Repo(directory)
+                        assert not repo.bare
 
-                    repo.git.reset('--hard', 'origin/HEAD')
+                        repo.git.reset('--hard', 'origin/HEAD')
+                    except:
+                        print("Could not reset repo, will clone anew")
+
+                        shutil.rmtree(directory, ignore_errors=True)
+                        os.mkdir(directory)
+                        subprocess.call(['git', 'clone', course['repo'], directory])
                 else:
                     print("Failed while copying " + directory)
 
