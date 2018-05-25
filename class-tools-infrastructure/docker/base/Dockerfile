@@ -37,6 +37,7 @@ RUN apt-get -y update && \
         zlib1g-dev \
         pandoc \
         texlive-xetex \
+        fonts-humor-sans  \
         python3-mysqldb && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
