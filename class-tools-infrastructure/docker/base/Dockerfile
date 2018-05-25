@@ -44,6 +44,9 @@ RUN apt-get -y update && \
 # install latest version of pip
 RUN pip3 install -U pip
 
+# install latest version of autopep8 and yapf for the nbextensions 
+RUN pip3 install -U autopep8 yapf
+
 # add libraries used in intro to python exercise
 RUN pip3 install -U jellyfish \
     ngram
