@@ -71,6 +71,7 @@ RUN pip3 install -U \
     requests_oauthlib \
     Flask \
     slackclient \
+    pillow \
     tweepy
 
 # add libraries for NLP
