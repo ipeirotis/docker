@@ -2,14 +2,18 @@
 
 set -e
 
-# overwrite permission changes when mounting persistent volumes
+# Overwrite permission changes when mounting persistent volumes.
 sudo chmod -R 777 /home
 
 python3 -u /clone_nbs.py
 
-#disable forrmgrader
+# Disable formgrader.
 sudo jupyter nbextension disable --sys-prefix formgrader/main --section=tree
 sudo jupyter serverextension disable --sys-prefix nbgrader.server_extensions.formgrader
+
+# Link data directory under notebooks to dataset directory if not already linked.
+sudo rm -rf /home/${JUPYTERHUB_USER}/notebooks/data
+sudo ln -fs /home/${JUPYTERHUB_USER}/data /home/${JUPYTERHUB_USER}/notebooks/data
 
 if [[ ! -z "${MYSQL_HOST}" ]]; then
     if sudo service mysql status; then

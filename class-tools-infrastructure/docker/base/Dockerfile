@@ -1,14 +1,16 @@
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV PYTHONIOENCODING UTF-8
 
-RUN apt-get -y update && \
-        apt-get -y dist-upgrade && \
-        apt-get -y upgrade && \
-        apt-get -y install \
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get -qy update && \
+        apt-get -qy dist-upgrade && \
+        apt-get -qy upgrade && \
+        apt-get -qy install \
         sudo \
         build-essential \
         python3-dev \
@@ -37,28 +39,28 @@ RUN apt-get -y update && \
         zlib1g-dev \
         pandoc \
         texlive-xetex \
-        fonts-humor-sans  \
+        fonts-humor-sans \
         python3-mysqldb && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
 
 # install latest version of pip
 RUN pip3 install -U pip
+RUN pip3 install tornado==4.5.3
 
-# install latest version of autopep8 and yapf for the nbextensions 
-RUN pip3 install -U autopep8 yapf
+RUN pip3 install autopep8 yapf
 
 # add libraries used in intro to python exercise
-RUN pip3 install -U jellyfish \
+RUN pip3 install jellyfish \
     ngram
 
 # add support for SQL
-RUN pip3 install -U \
+RUN pip3 install \
     sql_magic \
     mysqlclient
 
 # add standard data science libraries
-RUN pip3 install -U \
+RUN pip3 install \
     numpy \
     scipy \
     matplotlib \
@@ -67,7 +69,7 @@ RUN pip3 install -U \
     scikit-learn
 
 # add libraries for teaching web APIs
-RUN pip3 install -U \
+RUN pip3 install \
     requests \
     requests_oauthlib \
     Flask \
@@ -76,13 +78,13 @@ RUN pip3 install -U \
     tweepy
 
 # add libraries for NLP
-RUN pip3 install -U \
+RUN pip3 install \
     spacy \
     nltk \
     gensim
 
 # add libraries for visualization/mapping
-RUN pip3 install -U \
+RUN pip3 install \
     seaborn \
     bokeh \
     folium \
@@ -90,13 +92,13 @@ RUN pip3 install -U \
     geopy
 
 # add libraries for finance
-RUN pip3 install -U \
+RUN pip3 install \
     googlefinance \
     yahoo-finance \
     quandl
 
 # misc libraries
-RUN pip3 install -U \
+RUN pip3 install \
     boto \
     boto3 \
     elasticsearch \
@@ -110,20 +112,14 @@ RUN pip3 install -U \
 
 
 # for data mining class
-RUN pip3 install -U\
+RUN pip3 install \
     graphviz \
     liac-arff \
     pydotplus
 
-
-
-
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties
-RUN apt-get install apt-transport-https
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-    apt-get update && \
-    apt-get install -y r-base
+RUN apt-get update && apt-get install -qy software-properties-common
+RUN apt-get install -qy apt-transport-https
+RUN apt-get install -qy r-base
 
 RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown'), repos='https://cloud.r-project.org/')"
 

@@ -2,5 +2,8 @@ courses:
     - name: dealing_with_data
       repo: 'https://github.com/ipeirotis/dealing_with_data.git'
       instructor: 'panos'
+    - name: test_course
+      repo:
+      instructor: 'panos'
     - name: Spring2018_ProfFosterProvost
       repo: 'https://github.com/nicholasg3/Spring2018_ProfFosterProvost.git'

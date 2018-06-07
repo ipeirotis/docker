@@ -3,6 +3,7 @@ FROM ipeirotis/dealing_with_data:base-latest
 ENV NB_USER ubuntu
 
 ARG GCLOUD_DATA
+ARG DEBIAN_FRONTEND=noninteractive
 ENV DATA_BUCKET ${GCLOUD_DATA}
 
 RUN useradd -ms /bin/bash ubuntu
@@ -11,8 +12,8 @@ RUN export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s` && \
     echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-RUN apt-get -y update && \
-    apt-get -y install gcsfuse
+RUN apt-get -qy update && \
+    apt-get -qy install gcsfuse
 
 # install basic Python libraries to run Jupyter
 RUN pip3 install \
@@ -24,14 +25,19 @@ RUN pip3 install \
 RUN pip3 install --no-cache-dir \
     git+https://github.com/abenetopoulos/nbgrader@e3a0082
 
+RUN pip3 install jupyter_contrib_nbextensions
+
 RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter nbextension enable --system --py nbgrader && \
     jupyter serverextension enable --system --py nbgrader && \
     jupyter serverextension enable --system --py jupyterlab
+RUN jupyter contrib nbextension install --system
+RUN jupyter nbextension enable --system collapsible_headings/main
+RUN jupyter nbextension enable --system exercise2/main
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
-    sudo apt-get install -y nodejs
-RUN jupyter labextension install --debug @jupyterlab/hub-extension
+    sudo apt-get install -qy nodejs
+RUN jupyter labextension install --debug @jupyterlab/hub-extension@0.8.1
 
 ARG FILE_PATH
 

@@ -25,9 +25,16 @@ def run_grader():
     course = body['courseId'] if 'courseId' in body else None
 
     try:
+        # collect student submission for this assignment
+        collect_proc = subprocess.Popen(["nbgrader", "collect", "--student={}".format(student),
+            "--assignment={}".format(assignment), "--update"], stdout=subprocess.PIPE)
+        while collect_proc.poll() == None:
+            sleep(0.5)
+
         # run nbgrader autograde for this assignment
-        autograde_proc = subprocess.Popen(["nbgrader", "autograde", "--student={}".format(student),
-            "--assignment={}".format(assignment)], stdout=subprocess.PIPE)
+        autograde_proc = subprocess.Popen(["nbgrader", "autograde", "--Autograde.permissions=644",
+            "--student={}".format(student), "--assignment={}".format(assignment), "--create"],
+            stdout=subprocess.PIPE)
         while autograde_proc.poll() == None:
             sleep(0.5)
 

@@ -2,6 +2,8 @@ FROM ipeirotis/dealing_with_data:kubernetes-su-latest
 
 USER root
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 #install mysql
 ENV MYSQL_USER=mysql \
     MYSQL_PASSWORD=dwdstudent2015 \
@@ -14,8 +16,8 @@ ENV MYSQL_ROOT_PASSWORD='dwdstudent2015'
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-        && apt-get install -y mysql-server \
-        && apt-get install -y python3-mysqldb \
+        && apt-get install -qy mysql-server \
+        && apt-get install -qy python3-mysqldb \
         && rm -rf /var/lib/apt/lists/* \
         && rm -rf ${MYSQL_DATA_DIR} \
         && mkdir -p ${MYSQL_DATA_DIR} ${MYSQL_RUN_DIR} \
