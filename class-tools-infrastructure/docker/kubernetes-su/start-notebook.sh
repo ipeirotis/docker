@@ -26,7 +26,7 @@ if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
         exec sudo -n -E -u ${JUPYTERHUB_USER} python3 -u /grading_service.py &
     fi
 
-    exec sudo -n -E -u ${JUPYTERHUB_USER} jupyterhub-singleuser $*
+    exec sudo -n -E -Hu ${JUPYTERHUB_USER} jupyterhub-singleuser $*
 else
     exec jupyter notebook $*
 fi

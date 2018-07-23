@@ -12,8 +12,8 @@ sudo jupyter nbextension disable --sys-prefix formgrader/main --section=tree
 sudo jupyter serverextension disable --sys-prefix nbgrader.server_extensions.formgrader
 
 # Link data directory under notebooks to dataset directory if not already linked.
-sudo rm -rf /home/${JUPYTERHUB_USER}/notebooks/data
-sudo ln -fs /home/${JUPYTERHUB_USER}/data /home/${JUPYTERHUB_USER}/notebooks/data
+sudo rm -rf /home/${NB_USER}/notebooks/data
+sudo ln -fs /home/${NB_USER}/data /home/${NB_USER}/notebooks/data
 
 if [[ ! -z "${MYSQL_HOST}" ]]; then
     if sudo service mysql status; then
