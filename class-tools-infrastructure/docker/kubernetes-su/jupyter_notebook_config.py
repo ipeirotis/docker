@@ -11,6 +11,7 @@ c = get_config()
 c.NotebookApp.ip = '*'
 c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
+c.InlineBackend.figure_formats = set(['retina'])
 
 if 'JUPYTERHUB_USER' in os.environ:
     c.NotebookApp.notebook_dir = '/home/' + os.getenv('JUPYTERHUB_USER') + '/notebooks'
