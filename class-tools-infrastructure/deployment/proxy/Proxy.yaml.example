@@ -1,24 +1,27 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1beta1
+kind: Deployment
 metadata:
   name: grading-proxy
-  labels:
-    app: grading-proxy-app
 spec:
-  restartPolicy: OnFailure
-  containers:
-  - name: proxy-container
-    env:
-    - name: JUPYTERHUB_API_URL
-      value: API_URL_PLACEHOLDER
-    - name: JUPYTERHUB_API_TOKEN
-      value: API_TOKEN_PLACEHOLDER
-    - name: HUB_NAMESPACE
-      value: HUB_NAMESPACE_PLACEHOLDER
-    image: PROXY-IMAGE
-    imagePullPolicy: Always
-    ports:
-    - containerPort: 51017
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grading-proxy-app
+    spec:
+      containers:
+      - name: proxy-container
+        env:
+        - name: JUPYTERHUB_API_URL
+          value: API_URL_PLACEHOLDER
+        - name: JUPYTERHUB_API_TOKEN
+          value: API_TOKEN_PLACEHOLDER
+        - name: HUB_NAMESPACE
+          value: HUB_NAMESPACE_PLACEHOLDER
+        image: PROXY-IMAGE
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 51017
 ---
 apiVersion: v1
 kind: Service

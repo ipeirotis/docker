@@ -33,7 +33,11 @@ RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter serverextension enable --system --py jupyterlab
 RUN jupyter contrib nbextension install --system
 RUN jupyter nbextension enable --system collapsible_headings/main
+RUN jupyter nbextension enable --system code_prettify/code_prettify
+RUN jupyter nbextension enable --system codefolding/main
+RUN jupyter nbextension enable --system codefolding/edit
 RUN jupyter nbextension enable --system exercise2/main
+RUN jupyter nbextension enable --system spellchecker/main
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
     sudo apt-get install -qy nodejs

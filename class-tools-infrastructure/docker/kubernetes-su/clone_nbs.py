@@ -29,7 +29,7 @@ def check_notebooks():
         if not os.path.exists(directory):
             os.mkdir(directory)
 
-            if course['repo'] != '':
+            if course['repo'] is not None and course['repo'] != '':
                 subprocess.call(['git', 'clone', course['repo'], directory])
         else:
             try:
