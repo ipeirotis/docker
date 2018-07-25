@@ -14,6 +14,3 @@ We also a few more options for students (or classes) that want more flexibility:
 
 * [Setup a MySQL Server on Google Cloud, using Docker](https://docs.google.com/document/d/1PVebD6JsZfZEeTM918ss8805mrl8pomK9gGQBt2yP2o/edit?usp=sharing)
 
-* [Setup a Jupyter server and MySQL on Amazon Cloud, using Docker](https://docs.google.com/document/d/1L7knUOpEimeYzpkuMoh_Qx8oyoPehFEsK-9rj6_j7vg/edit?usp=sharing)
-
-
