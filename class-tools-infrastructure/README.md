@@ -324,7 +324,7 @@ where `--name` is a deployment identifier used by Helm.
   kubectl get nodes
   ```
 
-  in a terminal. The output should look like this:
+  in a terminal; this can be done via the [cloud console](https://console.cloud.google.com/kubernetes/). The output should look like this:
 
   ```bash
   gke-high-mem-default-pool-54b459ae-g4pk   Ready    [ ... ]
@@ -345,6 +345,9 @@ where `--name` is a deployment identifier used by Helm.
   ```bash
   kubectl label nodes gke-high-mem-default-pool-54b459ae-t64n hub-node=true
   ```
+  
+  After doing so, you may need to return to the [JupyterHub admin page](https://jupyterhub.ipeirotis.org/hub/admin) and click on "Shutdown Hub". Make sure to **untick** the boxes for "Shutdown proxy" and "Shutdown single-user-servers" before shutting down.
+
 
 - Install JupyterHub.
 
