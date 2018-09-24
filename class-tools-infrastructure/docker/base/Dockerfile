@@ -12,6 +12,7 @@ RUN apt-get -qy update && \
         apt-get -qy upgrade && \
         apt-get -qy install \
         sudo \
+        nano \
         build-essential \
         python3-dev \
         python3-pip \
