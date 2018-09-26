@@ -5,5 +5,14 @@ courses:
     - name: test_course
       repo:
       instructor: 'panos'
+    - name: Assignments_ProfHoffmannPham
+      repo:
+      instructor: 'khoffman'
+    - name: Summer2018_ProfHoffmannPham
+      repo: 'https://github.com/khof312/Summer2018_ProfHoffmannPham'
+      instructor: 'khoffman'
     - name: Spring2018_ProfFosterProvost
       repo: 'https://github.com/nicholasg3/Spring2018_ProfFosterProvost.git'
+    - name: DealingWithDataFall2018
+      repo: 'https://github.com/nhwhite212/DealingwithDataFall2018.git'
+      instructor: 'panos'
