@@ -6,7 +6,7 @@ c = get_config()
 username = os.getenv('JUPYTERHUB_USER')
 
 c.CourseDirectory.root = '/home/' + username + '/notebooks/COURSE_FOLDER'
-c.Exchange.course_id = 'COURSE_NAME'
+c.Exchange.course_id = COURSE_NAME
 
 c.Exchange.root = '/home/' + username + '/assignments'
 subprocess.call(['sudo', 'chmod', 'ugo+rw', c.Exchange.root])

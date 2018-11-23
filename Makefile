@@ -2,8 +2,10 @@ SHELL = /bin/bash
 DOCKER_PATH=class-tools-infrastructure/docker/
 IMG_VERSION?=latest
 GCLOUD_DATA?=shared_dataset_bucket
-DEPLOYMENT_PATH=class-tools-infrastructure/deployment/
+DEPLOYMENT_PATH=class-tools-infrastructure/deployment
 PREFIX?=class-tools-infrastructure/
+KUBE_EXEC?=oc
+PROVIDER?=oc
 export DEPLOYMENT_PATH
 
 .PHONY: build-image push-image build-base push-base build-kubernets-su push-kubernetes-su \
@@ -79,23 +81,23 @@ push-all: build-all
 	make push-proxy
 
 deploy-nfs-server: check-namespace
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/provisioner/nfs-server-gce-pv.yaml
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-server-rc.yaml
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-server-service.yaml
-	${DEPLOYMENT_PATH}nfs/srv_ip.sh
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pv.yaml
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pvc.yaml
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/provisioner/nfs-server-gce-pv.yaml
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-server-rc.yaml
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-server-service.yaml
+	${DEPLOYMENT_PATH}/${PROVIDER}/nfs/srv_ip.sh
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-pv.yaml
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-pvc.yaml
 
 teardown-nfs-server: check-namespace
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/provisioner/nfs-server-gce-pv.yaml
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-server-rc.yaml
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-server-service.yaml
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pv.yaml
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}nfs/nfs-pvc.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/provisioner/nfs-server-gce-pv.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-server-rc.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-server-service.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-pv.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/nfs-pvc.yaml
 
 deploy-grading-proxy: check-namespace
-	${DEPLOYMENT_PATH}proxy/setup.sh
-	kubectl create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}proxy/Proxy.yaml
+	${DEPLOYMENT_PATH}/proxy/setup.sh
+	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/proxy/Proxy.yaml
 
 teardown-grading-proxy: check-namespace
-	kubectl delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}proxy/Proxy.yaml
+	${KUBE_EXEC} delete --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/proxy/Proxy.yaml

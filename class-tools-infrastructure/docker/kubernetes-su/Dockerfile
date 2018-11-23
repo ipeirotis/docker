@@ -58,13 +58,6 @@ RUN chmod -R 777 /home
 
 CMD ["start-notebook.sh"]
 
-# Add local files as late as possible to avoid cache busting
-COPY $FILE_PATH/start-notebook.sh /usr/local/bin/
-COPY $FILE_PATH/clone_nbs.py /
-COPY $FILE_PATH/courses.yaml /
-COPY $FILE_PATH/nbgrader_config.py /etc/jupyter/
-COPY $FILE_PATH/grading_service.py /
-
 RUN apt update && apt install -y mysql-client
 
 RUN mkdir -p /srv/nbgrader/exchange && \
@@ -75,5 +68,12 @@ RUN mkdir -p /srv/nbgrader/exchange && \
 RUN R -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='https://cloud.r-project.org/')" && \
     R -e "devtools::install_github('IRkernel/IRkernel')" && \
     R -e "IRkernel::installspec(user = FALSE)"
+
+# Add local files as late as possible to avoid cache busting
+COPY $FILE_PATH/start-notebook.sh /usr/local/bin/
+COPY $FILE_PATH/clone_nbs.py /
+COPY $FILE_PATH/courses.yaml /
+COPY $FILE_PATH/nbgrader_config.py /etc/jupyter/
+COPY $FILE_PATH/grading_service.py /
 
 USER $NB_USER

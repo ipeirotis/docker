@@ -15,7 +15,7 @@ else:
     username = os.getenv('NB_USER')
 
 def check_notebooks():
-    notebook_dir_path = '/home/' + username + '/notebooks'
+    notebook_dir_path = '/home/' + username + '/notebooks/notes'
 
     if not os.path.exists(notebook_dir_path):
         os.makedirs(notebook_dir_path)
@@ -23,15 +23,26 @@ def check_notebooks():
     with open('courses.yaml') as courses_file:
         repositories = yaml.load(courses_file)
 
+    old_notebook_path = '/'.join(notebook_dir_path.split('/')[:-1])
     for course in repositories['courses']:
-        directory = notebook_dir_path + '/' + course['name']
+        old_directory = old_notebook_path + '/' + course['name']
+        directory = notebook_dir_path + '/' + course['instructor'] + '/' + course['name']
 
+        need_to_pull = False
         if not os.path.exists(directory):
-            os.mkdir(directory)
-
-            if course['repo'] is not None and course['repo'] != '':
+            if os.path.exists(old_directory):
+                instructor_directory = '/'.join(directory.split('/')[:-1])
+                os.makedirs(instructor_directory)
+                try:
+                    shutil.move(old_directory, instructor_directory)
+                    need_to_pull = True
+                except shutil.Error as sher:
+                    print("Could not move {} to {}: {}".format(old_directory, directory, sher))
+            elif course['repo'] is not None and course['repo'] != '':
+                os.makedirs(directory)
                 subprocess.call(['git', 'clone', course['repo'], directory])
-        else:
+
+        if need_to_pull:
             try:
                 repo = git.Repo(directory)
                 assert not repo.bare
@@ -87,7 +98,7 @@ def check_notebooks():
             except:
                 print("Failed while fetching changes, will backup entire folder and reset")
 
-                if subprocess.call(['cp', '-r', directory, notebook_dir_path + '/' + backup_pref + course['name']]) == 0:
+                if subprocess.call(['cp', '-r', directory, notebook_dir_path + '/' + course['instructor'] + '/' + backup_pref + course['name']]) == 0:
                     try:
                         repo = git.Repo(directory)
                         assert not repo.bare
