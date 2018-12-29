@@ -1,10 +1,13 @@
 courses:
-    - name: dealing_with_data_ipeirotis
+    - name: introduction_to_python
+      repo: 'https://github.com/ipeirotis/introduction-to-python'
+      instructor: 'pi1'
+    - name: dealing_with_data_summer_2019
       repo: 'https://github.com/ipeirotis/dealing_with_data.git'
       instructor: 'pi1'
     - name: test_course
       repo:
       instructor: 'panos'
-    - name: DealingWithDataFall2018
-      repo: 'https://github.com/nhwhite212/DealingwithDataFall2018.git'
-      instructor: 'nhw1'
+    - name: data_science_for_business_analytics_spring_2019
+      repo: 'https://github.com/ferlocar/spring_2019_data_mining'
+      instructor: 'fjp3'
