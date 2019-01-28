@@ -23,7 +23,7 @@ We also a few more options for students (or classes) that want more flexibility:
 
 * Auto-sharing notes through Github: If you have class material stored on Github, we can add your class on JupyterHub, and all your notes will appear automatically under the `/notes` folder, when students login: We just need to add the URL of your Github repository in the [courses.yaml](https://github.com/ipeirotis/docker/blob/master/class-tools-infrastructure/docker/kubernetes-su/courses.yaml) file. 
 
-* Resolving conflicts: If you update your notes on Github, and your students have modified the earlier version of the notes, when we fetch the latest version of the notes, we also make a backup of the earlier file that was modified by the student. 
+* Resolving conflicts: If you update your notes on Github, and your students have modified the earlier version of the notes, when we fetch the latest version of the notes, we also make a backup of the earlier file that was modified by the student. The [clone_nbs.py](https://github.com/ipeirotis/docker/blob/master/class-tools-infrastructure/docker/kubernetes-su/clone_nbs.py) script is the one that clones the repositories, makes backups of the conflicting notebooks, etc.
 
 * Sharing data files: If you want to share data files that are too big to be stored on Github, we can upload the files on JupyterHub, or we can even setup a mounted folder on JupyterHub, also mounted on your local computer, which you can use to share files with the students. 
 
