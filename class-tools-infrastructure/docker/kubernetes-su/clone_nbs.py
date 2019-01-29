@@ -41,6 +41,8 @@ def check_notebooks():
             elif course['repo'] is not None and course['repo'] != '':
                 os.makedirs(directory)
                 subprocess.call(['git', 'clone', course['repo'], directory])
+        else:
+            need_to_pull = True
 
         if need_to_pull:
             try:
