@@ -11,6 +11,6 @@ courses:
     - name: data_science_for_business_analytics_spring_2019
       repo: 'https://github.com/ferlocar/spring_2019_data_mining'
       instructor: 'fjp3'
-    - name: responsible_data_science
-      repo: https://github.com/DataResponsibly/DataResponsibly.github.io
+    - name: responsible_data_science_spring2019
+      repo: https://github.com/DataResponsibly/courses
       instructor: 'jds405'
