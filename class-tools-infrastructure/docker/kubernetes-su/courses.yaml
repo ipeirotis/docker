@@ -14,3 +14,6 @@ courses:
     - name: responsible_data_science_spring2019
       repo: https://github.com/DataResponsibly/courses
       instructor: 'jds405'
+    - name: data_mining_spring2019
+      repo: https://github.com/lebiathan/dm4ba_S2019.git
+      instructor: 'gv760'
