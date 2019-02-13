@@ -112,7 +112,7 @@ RUN pip3 install \
     gitpython
 
 # for responsible data science class
-RUN pip3 aif360 
+RUN pip3 install aif360 
 
 
 # for data mining class
