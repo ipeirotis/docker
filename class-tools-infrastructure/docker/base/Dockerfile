@@ -111,6 +111,8 @@ RUN pip3 install \
     pyyaml \
     gitpython
 
+# for responsible data science class
+RUN pip3 aif360 
 
 
 # for data mining class
