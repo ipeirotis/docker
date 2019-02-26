@@ -66,8 +66,8 @@ RUN mkdir -p /srv/nbgrader/exchange && \
     chmod -R 777 /.nbgrader.log
 
 # RUN R -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='https://cloud.r-project.org/')" && \
-#     R -e "devtools::install_github('IRkernel/IRkernel')" && \
-#     R -e "IRkernel::installspec(user = FALSE)"
+RUN   R -e "devtools::install_github('IRkernel/IRkernel')" && \
+      R -e "IRkernel::installspec(user = FALSE)"
 
 # Add local files as late as possible to avoid cache busting
 COPY $FILE_PATH/start-notebook.sh /usr/local/bin/
