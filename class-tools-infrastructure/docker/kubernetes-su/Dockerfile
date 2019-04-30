@@ -53,7 +53,7 @@ RUN jupyter nbextension enable --system  toc2/main
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
     sudo apt-get install -qy nodejs
-RUN jupyter labextension install --debug @jupyterlab/hub-extension@0.8.1
+# RUN jupyter labextension install --debug @jupyterlab/hub-extension@0.8.1
 
 ARG FILE_PATH
 
