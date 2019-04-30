@@ -37,8 +37,9 @@ RUN pip3 install jupyter_contrib_nbextensions
 
 RUN jupyter nbextension install --system --py nbgrader --overwrite && \
     jupyter nbextension enable --system --py nbgrader && \
-    jupyter serverextension enable --system --py nbgrader && \
-    jupyter serverextension enable --system --py jupyterlab
+    jupyter serverextension enable --system --py nbgrader 
+#    && \
+#    jupyter serverextension enable --system --py jupyterlab
 RUN jupyter contrib nbextension install --system
 RUN jupyter nbextension enable --system collapsible_headings/main
 RUN jupyter nbextension enable --system code_prettify/code_prettify
