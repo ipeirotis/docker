@@ -26,7 +26,7 @@ RUN apt-get -qy update && \
 RUN pip3 install \
     notebook \
     jupyterhub \
-    jupyterlab \
+#    jupyterlab \
     ipython
 
 
