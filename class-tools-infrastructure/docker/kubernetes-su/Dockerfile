@@ -16,11 +16,19 @@ RUN apt-get -qy update && \
     apt-get -qy install gcsfuse
 
 # install basic Python libraries to run Jupyter
+# RUN pip3 install \
+#     notebook==5.2.2 \
+#    jupyterhub==0.8.1 \
+#    jupyterlab==0.31.10 \
+#    ipython==6.2.1
+
+# install basic Python libraries to run Jupyter
 RUN pip3 install \
-    notebook==5.2.2 \
-    jupyterhub==0.8.1 \
-    jupyterlab==0.31.10 \
-    ipython==6.2.1
+    notebook \
+    jupyterhub \
+    jupyterlab \
+    ipython
+
 
 RUN pip3 install --no-cache-dir \
     git+https://github.com/abenetopoulos/nbgrader@e3a0082
