@@ -125,7 +125,7 @@ RUN apt-get update && apt-get install -qy software-properties-common
 RUN apt-get install -qy apt-transport-https
 RUN apt-get install -qy r-base
 
-RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'formatR', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown'), repos='https://cloud.r-project.org/')"
+RUN R -e "install.packages(c('car', 'ggvis', 'ggplot2', 'formatR', 'tidyverse', 'Hmisc', 'knitr', 'sqldfm', 'plotly', 'reshape2', 'MASS', 'rmarkdown', 'igraph'), repos='https://cloud.r-project.org/')"
 
 
 RUN chmod -R 777 /home
