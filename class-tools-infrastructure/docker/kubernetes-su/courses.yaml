@@ -20,3 +20,7 @@ courses:
     - name: data_synthesizer
       repo: https://github.com/DataResponsibly/DataSynthesizer
       instructor: 'jds405'
+    - name: introduction_to_python
+      repo: 'https://github.com/sosulski/python4data'
+      instructor: 'ks123'
+
