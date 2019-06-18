@@ -109,11 +109,16 @@ RUN pip3 install \
     pymongo \
     selenium \
     pyyaml \
-    gitpython
+    gitpython 
+
+# Open Data API
+RUN pip3 install sodapy 
 
 # for responsible data science class
 RUN pip3 install aif360 pandas-profiling lime
 
+# Map visualization
+RUN pip3 install cython cartopy geoplot descartes pysal geopandas mapclassify
 
 # for data mining class
 RUN pip3 install \
