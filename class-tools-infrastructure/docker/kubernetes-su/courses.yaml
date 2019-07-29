@@ -2,24 +2,6 @@ courses:
     - name: introduction_to_python
       repo: 'https://github.com/ipeirotis/introduction-to-python'
       instructor: 'pi1'
-    - name: dealing_with_data_summer_2019
-      repo: 'https://github.com/ipeirotis/dealing_with_data.git'
-      instructor: 'pi1'
-    - name: test_course
-      repo:
-      instructor: 'panos'
-    - name: data_science_for_business_analytics_spring_2019
-      repo: 'https://github.com/ferlocar/spring_2019_data_mining'
-      instructor: 'fjp3'
-    - name: responsible_data_science_spring2019
-      repo: https://github.com/DataResponsibly/courses
-      instructor: 'jds405'
-    - name: data_mining_spring2019
-      repo: https://github.com/lebiathan/dm4ba_S2019.git
-      instructor: 'gv760'
-    - name: data_synthesizer
-      repo: https://github.com/DataResponsibly/DataSynthesizer
-      instructor: 'jds405'
     - name: introduction_to_python
       repo: 'https://github.com/sosulski/python4data'
       instructor: 'ks123'
