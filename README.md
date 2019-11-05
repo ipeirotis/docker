@@ -4,9 +4,9 @@ This repository contains our setup and configuration files for setting up a data
 
 ## Instructions for students
 
-* As the simplestoption for having access to a Jupyter server, you can login to [Google Colaboratory](https://colab.research.google.com/) and use the Jupyter notebooks there.
+* As the simplestoption for having access to a Jupyter server, you can login to [Google Colaboratory](https://colab.research.google.com/) and use the Jupyter notebooks there. The default configuration should be more than sufficient for the "Introduction to Programming" class.
 
-We also a few more options for students (or classes) that want more flexibility:
+We also a few more options for students (or classes) that want more flexibility, for example the Projects in Programming class:
 
 * [Setup a Jupyter server and MySQL locally, using Docker](https://docs.google.com/document/d/1d9bRGYUSvTGRAqXIJAmH8_SGkXaU5bJ3w3p4IeXgQpo/edit?usp=sharing)
 
