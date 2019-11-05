@@ -4,7 +4,7 @@ This repository contains our setup and configuration files for setting up a data
 
 ## Instructions for students
 
-* As the simplest, and default option for NYU students, we offer a JupyterHub server, running at https://jupyterhub.stern.nyu.edu. You need to be within the NYU network to connect, or [use the NYU VPN](https://www.nyu.edu/life/information-technology/getting-started/network-and-connectivity/vpn.html). Login using your NYU id as a login  (e.g., abc123, **not** your email) and use your NYU password to log in.
+* As the simplestoption for having access to a Jupyter server, you can login to [Google Colaboratory](https://colab.research.google.com/) and use the Jupyter notebooks there.
 
 We also a few more options for students (or classes) that want more flexibility:
 
