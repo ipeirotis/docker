@@ -8,13 +8,7 @@ ENV DATA_BUCKET ${GCLOUD_DATA}
 
 RUN useradd -ms /bin/bash ubuntu
 
-RUN export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s` && \
-    echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-
-RUN apt-get -qy update && \
-    apt-get -qy install gcsfuse
-
+RUN apt-get -qy update
 # install basic Python libraries to run Jupyter
 # RUN pip3 install \
 #     notebook==5.2.2 \
@@ -30,14 +24,8 @@ RUN pip3 install \
     ipython
 
 
-RUN pip3 install --no-cache-dir \
-    git+https://github.com/abenetopoulos/nbgrader@e3a0082
-
 RUN pip3 install jupyter_contrib_nbextensions
 
-RUN jupyter nbextension install --system --py nbgrader --overwrite && \
-    jupyter nbextension enable --system --py nbgrader && \
-    jupyter serverextension enable --system --py nbgrader 
 #    && \
 #    jupyter serverextension enable --system --py jupyterlab
 RUN jupyter contrib nbextension install --system
@@ -48,8 +36,8 @@ RUN jupyter nbextension enable --system codefolding/edit
 RUN jupyter nbextension enable --system exercise2/main
 RUN jupyter nbextension enable --system spellchecker/main
 
-RUN jupyter nbextension install --system https://rawgit.com/jfbercher/small_nbextensions/master/toc2.zip 
-RUN jupyter nbextension enable --system  toc2/main 
+RUN jupyter nbextension install --system https://rawgit.com/jfbercher/small_nbextensions/master/toc2.zip
+RUN jupyter nbextension enable --system  toc2/main
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
     sudo apt-get install -qy nodejs
@@ -72,10 +60,6 @@ CMD ["start-notebook.sh"]
 
 RUN apt update && apt install -y mysql-client
 
-RUN mkdir -p /srv/nbgrader/exchange && \
-    chmod -R 777 /srv/nbgrader && \
-    touch /.nbgrader.log && \
-    chmod -R 777 /.nbgrader.log
 
 # RUN R -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos='https://cloud.r-project.org/')" && \
 
@@ -88,7 +72,5 @@ RUN   R -e "devtools::install_github('IRkernel/IRkernel')" && \
 COPY $FILE_PATH/start-notebook.sh /usr/local/bin/
 COPY $FILE_PATH/clone_nbs.py /
 COPY $FILE_PATH/courses.yaml /
-COPY $FILE_PATH/nbgrader_config.py /etc/jupyter/
-COPY $FILE_PATH/grading_service.py /
 
 USER $NB_USER

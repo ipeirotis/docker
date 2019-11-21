@@ -1,0 +1,8 @@
+courses:
+    - name: introduction_to_python
+      repo: 'https://github.com/ipeirotis/introduction-to-python'
+      instructor: 'pi1'
+    - name: introduction_to_python
+      repo: 'https://github.com/sosulski/python4data'
+      instructor: 'ks123'
+

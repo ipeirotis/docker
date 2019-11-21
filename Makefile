@@ -68,17 +68,11 @@ push-proxy: build-proxy
 
 build-all:
 	make build-base
-	make build-kubernetes-su
 	make build-local-su
-	make build-db
-	make build-proxy
 
 push-all: build-all
 	make push-base
-	make push-kubernetes-su
 	make push-local-su
-	make push-db
-	make push-proxy
 
 deploy-nfs-server: check-namespace
 	${KUBE_EXEC} create --namespace=${NAMESPACE} -f ${DEPLOYMENT_PATH}/${PROVIDER}/nfs/provisioner/nfs-server-gce-pv.yaml
