@@ -141,4 +141,4 @@ def fetch_data():
 check_notebooks()
 fetch_data()
 
-subprocess.call(['sudo', 'ln', '-s', '/home/' + username + '/data/dealing_with_data', '/data'])
+#subprocess.call(['sudo', 'ln', '-s', '/home/' + username + '/data/dealing_with_data', '/data'])
