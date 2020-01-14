@@ -34,6 +34,7 @@ RUN apt-get -qy update && \
         language-pack-en \
         libcurl4-openssl-dev \
         libffi-dev \
+        libspatialindex-dev \
         libzmq3-dev \
         libxml2-dev \
         libxslt-dev \
