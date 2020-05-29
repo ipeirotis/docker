@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
